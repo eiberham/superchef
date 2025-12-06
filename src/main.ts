@@ -1,11 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
-
-console.log('Database URL:', process.env.DATABASE_URL);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +14,15 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
     transform: true,
   }));
+
+   const config = new DocumentBuilder()
+    .setTitle('Recipebooster')
+    .setDescription('Recipebooster docs')
+    .setVersion('1.0')
+    .addTag('recipebooster')
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
 
   await app.listen(process.env.PORT ?? 3000);
 }
