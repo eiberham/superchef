@@ -1,16 +1,20 @@
-export interface User {
+/* export interface User {
     id: number;
     name: string;
     email: string;
     password: string;
     createdAt: Date;
     updatedAt: Date;
-}
+} */
+
+import type { CreateUserDto } from '../dto/create-user.dto';
+import type { UpdateUserDto } from '../dto/update-user.dto';
+import type { UserResponseDto } from '../dto/user-response.dto';
 
 export interface UserRepository {
-    findAll(): Promise<User[]>;
-    findById(id: number): Promise<User | null>;
-    create(user: Partial<User>): Promise<User>;
-    update(id: number, user: Partial<User>): Promise<User>;
+    findAll(): Promise<UserResponseDto[]>;
+    findById(id: number): Promise<UserResponseDto | null>;
+    create(user: Partial<CreateUserDto>): Promise<UserResponseDto>;
+    update(id: number, user: UpdateUserDto): Promise<UserResponseDto>;
     delete(id: number): Promise<void>;
 }

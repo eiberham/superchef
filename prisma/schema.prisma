@@ -35,6 +35,7 @@ model Recipe {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @default(now()) @map("updated_at")
   user        User     @relation(fields: [userId], references: [id]) // Many recipes belong to one user
+  ingredients RecipeIngredient[] // A recipe can have multiple ingredients through RecipeIngredient
   @@map("recipe")
 }
 
@@ -42,4 +43,15 @@ model Ingredient {
   id Int @id @default(autoincrement())
   name String
   @@map("ingredient")
+  recipeIngredients RecipeIngredient[]  // An ingredient can be used in multiple recipes through RecipeIngredient
+}
+
+model RecipeIngredient {
+  id Int @id @default(autoincrement())
+  recipeId Int @map("recipe_id")
+  ingredientId Int @map("ingredient_id")
+  quantity String
+  recipe Recipe @relation(fields: [recipeId], references: [id])
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+  @@map("recipe_ingredient")
 }

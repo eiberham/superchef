@@ -5,11 +5,13 @@ import { AppService } from './app.service';
 
 import { UserModule } from './users/user.module';
 import { RecipeModule } from './recipes/recipe.module';
+import { IngredientModule } from './ingredients/ingredient.module';
 
 @Module({
   imports: [
     UserModule,
     RecipeModule,
+    IngredientModule,
     ThrottlerModule.forRoot({
       throttlers: [
         {
