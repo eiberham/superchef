@@ -1,4 +1,4 @@
-export class IngredientResponseDTO {
+export class IngredientResponseDto {
     id: number;
     name: string;
 }

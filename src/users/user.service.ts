@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import type { UserRepository } from './interfaces/user.interface';
+import type { UserRepository, User } from './interfaces/user.interface';
 import type { CreateUserDto } from './dto/create-user.dto';
 import type { UpdateUserDto } from './dto/update-user.dto';
 import type { UserResponseDto } from './dto/user-response.dto';
@@ -17,6 +17,10 @@ export class UserService{
 
     async getUserById(id: number): Promise<UserResponseDto | null> {
         return this.userRepository.findById(id)
+    }
+
+    async getUserByEmail(email: string): Promise<User | null> {
+        return this.userRepository.findByEmail(email)
     }
 
     async createUser( userData : CreateUserDto ): Promise<UserResponseDto> {

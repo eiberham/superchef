@@ -1,6 +1,7 @@
 export class RecipeResponseDto {
+    id: number;
     name: string;
-    description: string;
+    description: string | null;
     steps: string;
     imageUrl: string;
     userId: number;

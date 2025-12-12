@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service'; // You'll need to create this
-import type { UserRepository } from '../interfaces/user.interface';
+import type { UserRepository, User } from '../interfaces/user.interface';
 import type { CreateUserDto } from '../dto/create-user.dto';
 import type { UserResponseDto } from '../dto/user-response.dto';
 
@@ -15,6 +15,12 @@ export class UserRepositoryImpl implements UserRepository {
   async findById(id: number): Promise<UserResponseDto | null> {
     return this.prisma.user.findUnique({
       where: { id }
+    });
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: { email }
     });
   }
 

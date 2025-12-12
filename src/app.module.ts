@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UserModule } from './users/user.module';
 import { RecipeModule } from './recipes/recipe.module';
 import { IngredientModule } from './ingredients/ingredient.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { IngredientModule } from './ingredients/ingredient.module';
           limit: 10,
         },
       ],
-    })
+    }),
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
