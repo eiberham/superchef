@@ -7,6 +7,7 @@ import { UserModule } from './users/user.module';
 import { RecipeModule } from './recipes/recipe.module';
 import { IngredientModule } from './ingredients/ingredient.module';
 import { AuthModule } from './auth/auth.module';
+import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { AuthModule } from './auth/auth.module';
         },
       ],
     }),
-    AuthModule
+    AuthModule,
+    RabbitMQModule,
   ],
   controllers: [AppController],
   providers: [AppService],

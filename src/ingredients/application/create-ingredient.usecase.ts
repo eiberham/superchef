@@ -13,5 +13,4 @@ export class CreateIngredient {
     async create(ingredient: CreateIngredientDto): Promise<IngredientResponseDto>{
         return this.ingredientRepository.create(ingredient)
     }
-
 }

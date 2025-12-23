@@ -18,4 +18,5 @@ export interface UserRepository {
     create(user: Partial<CreateUserDto>): Promise<UserResponseDto>;
     update(id: number, user: UpdateUserDto): Promise<UserResponseDto>;
     delete(id: number): Promise<void>;
+    assignRoles(userId: number, roles: string[]): Promise<void>;
 }

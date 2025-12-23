@@ -42,4 +42,25 @@ export class UserRepositoryImpl implements UserRepository {
       where: { id }
     });
   }
+
+  async assignRoles(userId: number, roles: string[]): Promise<void> {
+    const roleRecords = await this.prisma.role.findMany({
+      where: {
+        name: { in: roles }
+      }
+    })
+
+    if (roleRecords.length !== roles.length) {
+      throw new Error('One or more roles are invalid');
+    }
+
+    const userRoleData = roleRecords.map(role => ({
+      userId,
+      roleId: role.id
+    }));
+
+    await this.prisma.userRole.createMany({
+      data: userRoleData
+    });
+  }
 }

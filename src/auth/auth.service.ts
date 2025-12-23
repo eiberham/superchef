@@ -1,16 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { UserService } from '../users/user.service'
+import { GetUserByEmailUsecase } from '../users/application/get-user-by-email.usecase'
 import bcrypt from 'bcrypt'
 
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly userService: UserService, 
+        private readonly getUserByEmailUsecase: GetUserByEmailUsecase,
         private readonly jwtService: JwtService) {}
 
     async login(email: string, password: string): Promise<string> {
-        const user = await this.userService.getUserByEmail(email)
+        const user = await this.getUserByEmailUsecase.getUserByEmail(email)
         if (!user || !bcrypt.compareSync(password, user.password)) {
             throw new UnauthorizedException('Invalid email or password')
         }

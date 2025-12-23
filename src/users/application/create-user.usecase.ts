@@ -11,6 +11,16 @@ export class CreateUserUsecase{
     ) {}
 
     async createUser( userData : CreateUserDto ): Promise<UserResponseDto> {
-        return this.userRepository.create(userData)
+        let user: UserResponseDto | null = null;
+        try {
+            user = await this.userRepository.create(userData);
+            if (userData.roles && userData.roles.length > 0) {
+                await this.userRepository.assignRoles(user.id, userData.roles);
+            }
+            return user;
+        } catch (error) {
+            if (user) await this.userRepository.delete(user.id);
+            throw error;
+        }
     }
 }

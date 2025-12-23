@@ -13,4 +13,7 @@ export class UpdateUserDto {
     @ApiProperty({ example: 'password' })
     @IsNotEmpty()
     password: string;
+
+    @ApiProperty({ example: ['admin', 'viewer'], required: false })
+    roles?: string[];
 }

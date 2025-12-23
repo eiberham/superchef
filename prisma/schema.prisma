@@ -22,6 +22,7 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
   recipes   Recipe[] // A user can have multiple recipes
+  userRoles UserRole[] // A user can have multiple roles through UserRole
   @@map("user")
 }
 
@@ -54,4 +55,20 @@ model RecipeIngredient {
   recipe Recipe @relation(fields: [recipeId], references: [id])
   ingredient Ingredient @relation(fields: [ingredientId], references: [id])
   @@map("recipe_ingredient")
+}
+
+model Role {
+  id Int @id @default(autoincrement())
+  name String @unique
+  userRoles UserRole[]
+  @@map("role")
+}
+
+model UserRole {
+  id Int @id @default(autoincrement())
+  userId Int @map("user_id")
+  roleId Int @map("role_id")
+  user User @relation(fields: [userId], references: [id])
+  role Role @relation(fields: [roleId], references: [id])
+  @@map("user_role")
 }
