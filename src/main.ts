@@ -22,10 +22,10 @@ async function bootstrap() {
   });
 
    const config = new DocumentBuilder()
-    .setTitle('Recipebooster')
-    .setDescription('Recipebooster docs')
+    .setTitle('Super chef')
+    .setDescription('Super chef docs')
     .setVersion('1.0')
-    .addTag('recipebooster')
+    .addTag('superchef')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

@@ -4,8 +4,9 @@ import { CreateRecipeUsecase } from './application/create-recipe.usecase';
 import { ListRecipesUsecase } from './application/list-recipes.usecase';
 import { DeleteRecipeUsecase } from './application/delete-recipe.usecase';
 import { GetRecipeUsecase } from './application/get-recipe.usecase';
+import { GetRecipeByNameUsecase } from './application/get-recipe-by-name.usecase';
 import { UpdateRecipeUsecase } from './application/update-recipe.usecase';
-import { RecipeRepositoryImpl } from './infraestructure/prisma-recipe.repository.impl';
+import { RecipeRepositoryImpl } from './infraestructure/prisma-recipe.repository';
 import { PrismaService } from '../prisma/prisma.service';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
@@ -17,6 +18,7 @@ import { ThrottlerGuard } from '@nestjs/throttler';
         CreateRecipeUsecase,
         UpdateRecipeUsecase,
         GetRecipeUsecase,
+        GetRecipeByNameUsecase,
         DeleteRecipeUsecase,
         ListRecipesUsecase,
         PrismaService,

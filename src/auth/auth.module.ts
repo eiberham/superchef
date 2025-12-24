@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { UserModule } from '../users/user.module';
-import { UserService } from '../users/user.service';
+import { GetUserByEmailUsecase } from '../users/application/get-user-by-email.usecase';
 import { UserRepositoryImpl } from '../users/infraestructure/prisma-user.repository';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -18,7 +18,7 @@ import { PrismaService } from '../prisma/prisma.service';
   ],
   controllers: [AuthController],
   providers: [
-    UserService,
+    GetUserByEmailUsecase,
     PrismaService,
     {
       provide: 'USER_REPOSITORY',

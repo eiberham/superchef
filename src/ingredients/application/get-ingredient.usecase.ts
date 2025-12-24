@@ -3,7 +3,7 @@ import type { IngredientRepository } from '../domain/ingredient.interface';
 import type { IngredientResponseDto } from '../controllers/dto/ingredient-response.dto';
 
 @Injectable()
-export class GetIngredient {
+export class GetIngredientUsecase {
     constructor(
         @Inject('INGREDIENT_REPOSITORY') 
         private readonly ingredientRepository: IngredientRepository

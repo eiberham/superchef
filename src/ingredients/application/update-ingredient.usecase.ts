@@ -4,7 +4,7 @@ import type { IngredientResponseDto } from '../controllers/dto/ingredient-respon
 import { UpdateIngredientDto } from '../controllers/dto/update-ingredient.dto';
 
 @Injectable()
-export class UpdateIngredient {
+export class UpdateIngredientUsecase {
     constructor(
         @Inject('INGREDIENT_REPOSITORY') 
         private readonly ingredientRepository: IngredientRepository

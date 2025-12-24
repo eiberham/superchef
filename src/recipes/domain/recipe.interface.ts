@@ -16,6 +16,7 @@ export interface Recipe {
 export interface RecipeRepository {
     findAll(): Promise<RecipeResponseDto[]>;
     findById(id: number): Promise<RecipeResponseDto | null>;
+    findByName(name: string): Promise<RecipeResponseDto | null>;
     create(recipe: CreateRecipeDto): Promise<RecipeResponseDto>;
     update(id: number, recipe: UpdateRecipeDto): Promise<RecipeResponseDto>;
     delete(id: number): Promise<void>;

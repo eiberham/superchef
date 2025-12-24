@@ -11,7 +11,10 @@ export class RabbitMQService implements OnModuleInit {
         this.channel = await this.connection.createChannel()
     }
 
-    getChannel(): Channel {
+    async getChannel(): Promise<Channel> {
+        if (!this.channel) {
+            await this.onModuleInit()
+        }
         return this.channel
     }
 }

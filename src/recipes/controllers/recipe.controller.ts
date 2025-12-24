@@ -1,4 +1,4 @@
-import { Controller, ParseIntPipe, ValidationPipe, Get, Req, Param, Body, Post, Put, Delete } from '@nestjs/common';
+import { Controller, ParseIntPipe, ValidationPipe, Get, Req, Param, Body, Post, Put, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { CreateRecipeUsecase } from '../application/create-recipe.usecase';
 import { UpdateRecipeUsecase } from '../application/update-recipe.usecase';
@@ -20,28 +20,33 @@ export class RecipeController {
         private readonly listRecipesUsecase: ListRecipesUsecase
     ) {}
 
+    @HttpCode(HttpStatus.OK)
     @Get()
     async getRecipes( @Req() req: Request ): Promise<RecipeResponseDto[]> {
         return this.listRecipesUsecase.getRecipes();
     }
     
+    @HttpCode(HttpStatus.OK)
     @Get(':id')
     async getRecipeById( @Req() req: Request, @Param('id', ParseIntPipe) id: number ): Promise<RecipeResponseDto | null> {
         return this.getRecipeUsecase.getRecipeById(id);
     }
 
+    @HttpCode(HttpStatus.CREATED)
     @Post()
     @ApiBody({ type: CreateRecipeDto })
     async createRecipe( @Body(ValidationPipe) recipeData: CreateRecipeDto ): Promise<RecipeResponseDto> {
         return this.createRecipeUsecase.createRecipe(recipeData);
     }
 
+    @HttpCode(HttpStatus.OK)
     @Put(':id')
     @ApiBody({ type: UpdateRecipeDto })
     async updateRecipe( @Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) recipeData: UpdateRecipeDto ): Promise<RecipeResponseDto> {
         return this.updateRecipeUsecase.updateRecipe(id, recipeData);
     }
 
+    @HttpCode(HttpStatus.NO_CONTENT)
     @Delete(':id')
     async deleteRecipe( @Param('id', ParseIntPipe) id: number ): Promise<void> {
         return this.deleteRecipeUsecase.deleteRecipe(id);

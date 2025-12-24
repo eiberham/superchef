@@ -10,7 +10,7 @@ export class UpdateUserUsecase{
         private readonly userRepository: UserRepository
     ) {}
 
-    async updateUser(id: number, userData: UpdateUserDto): Promise<UserResponseDto> {
-        return this.userRepository.update(id, userData)
+    async updateUser(id: number, data: UpdateUserDto): Promise<UserResponseDto> {
+        return this.userRepository.update(id, data)
     }
 }

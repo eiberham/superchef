@@ -1,5 +1,6 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsArray } from "class-validator";
 import { ApiProperty } from '@nestjs/swagger';
+import { RecipeIngredient } from "./recipe-ingredient.dto";
 
 export class UpdateRecipeDto {
     @ApiProperty({ example: 'Spaghetti Bolognese' })
@@ -18,4 +19,13 @@ export class UpdateRecipeDto {
     @ApiProperty({ example: 1 })
     @IsNotEmpty()
     userId: number;
+
+    @ApiProperty({ example: [{
+        ingredientId: 1,
+        quantity: 2,
+        unit: 'slices'
+    }] })
+    @IsArray()
+    @IsNotEmpty()
+    ingredients?: RecipeIngredient[] | undefined;
 }

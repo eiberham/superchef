@@ -8,6 +8,7 @@ generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
   moduleFormat    = "cjs"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -18,6 +19,7 @@ model User {
   id        Int   @id @default(autoincrement())
   email     String   @unique
   name      String
+  username  String   @unique
   password  String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
@@ -51,7 +53,8 @@ model RecipeIngredient {
   id Int @id @default(autoincrement())
   recipeId Int @map("recipe_id")
   ingredientId Int @map("ingredient_id")
-  quantity String
+  quantity Int
+  unit String
   recipe Recipe @relation(fields: [recipeId], references: [id])
   ingredient Ingredient @relation(fields: [ingredientId], references: [id])
   @@map("recipe_ingredient")

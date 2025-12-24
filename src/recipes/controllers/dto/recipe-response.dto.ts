@@ -1,3 +1,5 @@
+import { RecipeIngredient } from "./recipe-ingredient.dto";
+
 export class RecipeResponseDto {
     id: number;
     name: string;
@@ -7,4 +9,5 @@ export class RecipeResponseDto {
     userId: number;
     createdAt: Date;
     updatedAt: Date;
+    ingredients?: RecipeIngredient[];
 }

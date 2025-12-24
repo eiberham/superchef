@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service'; // You'll need to create this
+import { PrismaService } from '../../prisma/prisma.service';
 import type { UserRepository, User } from '../domain/user.interface';
 import type { CreateUserDto } from '../controllers/dto/create-user.dto';
 import type { UserResponseDto } from '../controllers/dto/user-response.dto';
+import { UpdateUserDto } from '../controllers/dto/update-user.dto';
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
@@ -24,43 +25,43 @@ export class UserRepositoryImpl implements UserRepository {
     });
   }
 
-  async create(userData: CreateUserDto): Promise<UserResponseDto> {
+  async create(data: CreateUserDto): Promise<UserResponseDto> {
+    const { name, email, username, password, roles } = data;
     return this.prisma.user.create({
-      data: userData
+      data: { 
+        name, email, username, password,
+        userRoles: {
+          create: roles?.map(role => ({
+            role: {
+              connect: { name: role }
+            }
+          })) || []
+        }
+      }
     });
   }
 
-  async update(id: number, userData: Partial<UserResponseDto>): Promise<UserResponseDto> {
+  async update(id: number, data: UpdateUserDto ): Promise<UserResponseDto> {
+    const { name, email, username, password, roles } = data;
     return this.prisma.user.update({
       where: { id },
-      data: userData
+      data: {
+        name, email, username, password,
+        userRoles: roles ? {
+          deleteMany: {},
+          create: roles.map(role => ({
+            role: {
+              connect: { name: role }
+            }
+          }))
+        } : undefined
+      }
     });
   }
 
   async delete(id: number): Promise<void> {
     await this.prisma.user.delete({
       where: { id }
-    });
-  }
-
-  async assignRoles(userId: number, roles: string[]): Promise<void> {
-    const roleRecords = await this.prisma.role.findMany({
-      where: {
-        name: { in: roles }
-      }
-    })
-
-    if (roleRecords.length !== roles.length) {
-      throw new Error('One or more roles are invalid');
-    }
-
-    const userRoleData = roleRecords.map(role => ({
-      userId,
-      roleId: role.id
-    }));
-
-    await this.prisma.userRole.createMany({
-      data: userRoleData
     });
   }
 }
