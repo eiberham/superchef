@@ -28,7 +28,6 @@ export class AgentUseCase {
         const response = await this.agent.invoke({
             messages: [{ role: "user", content: message }],
         })
-        console.log("response: ", response)
         return response;
     }
 }
