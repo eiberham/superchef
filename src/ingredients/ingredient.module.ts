@@ -7,8 +7,6 @@ import { GetIngredientUsecase } from './application/get-ingredient.usecase';
 import { DeleteIngredientUsecase } from './application/delete-ingredient.usecase';
 import { IngredientRepositoryImpl } from './infraestructure/prisma-ingredient.repository';
 import { PrismaService } from '../prisma/prisma.service';
-import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Module({
     controllers: [IngredientController],
@@ -22,10 +20,6 @@ import { ThrottlerGuard } from '@nestjs/throttler';
         {
             provide: 'INGREDIENT_REPOSITORY',
             useClass: IngredientRepositoryImpl,
-        },
-        {
-            provide: APP_GUARD,
-            useClass: ThrottlerGuard
         }
     ]
 })

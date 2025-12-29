@@ -21,7 +21,13 @@ export class UserRepositoryImpl implements UserRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({
-      where: { email }
+      where: { email },
+      relationLoadStrategy: 'join',
+      include: { 
+          userRoles: {
+            include: { role: true }
+          }
+      }
     });
   }
 

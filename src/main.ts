@@ -26,6 +26,7 @@ async function bootstrap() {
     .setDescription('Super chef docs')
     .setVersion('1.0')
     .addTag('superchef')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

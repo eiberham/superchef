@@ -5,6 +5,13 @@ export interface User {
     password: string;
     createdAt: Date;
     updatedAt: Date;
+    userRoles?: UserRole[];
+}
+
+interface UserRole {
+    role: {
+        name: string;
+    }
 }
 
 import type { CreateUserDto } from '../controllers/dto/create-user.dto';

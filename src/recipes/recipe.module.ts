@@ -8,8 +8,6 @@ import { GetRecipeByNameUsecase } from './application/get-recipe-by-name.usecase
 import { UpdateRecipeUsecase } from './application/update-recipe.usecase';
 import { RecipeRepositoryImpl } from './infraestructure/prisma-recipe.repository';
 import { PrismaService } from '../prisma/prisma.service';
-import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard } from '@nestjs/throttler';
 
 
 @Module({
@@ -25,10 +23,6 @@ import { ThrottlerGuard } from '@nestjs/throttler';
         {
             provide: 'RECIPE_REPOSITORY',
             useClass: RecipeRepositoryImpl,
-        },
-        {
-            provide: APP_GUARD,
-            useClass: ThrottlerGuard
         }
     ]
 })
