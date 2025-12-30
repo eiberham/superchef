@@ -7,10 +7,12 @@ import { GetIngredientUsecase } from './application/get-ingredient.usecase';
 import { DeleteIngredientUsecase } from './application/delete-ingredient.usecase';
 import { IngredientRepositoryImpl } from './infraestructure/prisma-ingredient.repository';
 import { PrismaService } from '../prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
     controllers: [IngredientController],
     providers: [
+        JwtService,
         CreateIngredientUsecase,
         UpdateIngredientUsecase,
         ListIngredientsUsecase,

@@ -1,13 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ConsoleLogger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: new ConsoleLogger({
+      json: true,
+      logLevels: process.env.LOG_LEVEL ? JSON.parse(process.env.LOG_LEVEL) : ['error', 'warn', 'log'],
+    }),
+  });
+
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1'
+  });
   
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,

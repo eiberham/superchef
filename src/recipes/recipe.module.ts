@@ -8,11 +8,13 @@ import { GetRecipeByNameUsecase } from './application/get-recipe-by-name.usecase
 import { UpdateRecipeUsecase } from './application/update-recipe.usecase';
 import { RecipeRepositoryImpl } from './infraestructure/prisma-recipe.repository';
 import { PrismaService } from '../prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Module({
     controllers: [RecipeController],
     providers: [
+        JwtService,
         CreateRecipeUsecase,
         UpdateRecipeUsecase,
         GetRecipeUsecase,

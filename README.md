@@ -1,11 +1,134 @@
 ## SuperChef
 
-## Description
+<table border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse; border: none;">
+  <tr>
+    <td><img alt="GitHub" src="https://img.shields.io/github/license/eiberham/superchef?style=for-the-badge"></td>
+    <td><img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/eiberham/superchef?style=for-the-badge"></td>
+    <td><img alt="GitHub top language" src="https://img.shields.io/github/languages/top/eiberham/superchef?style=for-the-badge"></td>
+    <td><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/eiberham/superchef?style=for-the-badge"></td>
+    <td><img alt="GitHub stars" src="https://img.shields.io/github/stars/eiberham/superchef?style=for-the-badge"></td>
+    <td><img alt="GitHub workflow status" src="https://img.shields.io/github/actions/workflow/status/eiberham/superchef/ci.yml?style=for-the-badge"></td>
+  </tr>
+</table>
 
 SuperChef is an AI-powered chef assistant designed to analyze existing recipes, suggest meaninful improvements, and help you create better dishes using your current ingredients.
 
 It works on top of your current database, providing practical, cooking-focused recommendations rather than generic advice.
 
+TLDR features:
+
+- Real world backend concerns
+- Async workflows
+- Security best practices
+- Clean NestJS architecture
+- Pragmatic use of message queue
+
+## Routes
+
+<table>
+  <thead>
+    <tr>
+      <th>Verb</th><th>Resource</th><th>Description</th><th>Scope</th><th>Role Access</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td><td>/auth</td><td>Superchef sign in</td><td>Public</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>GET</td><td>/ingredients</td><td>Get ingredients list</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>GET</td><td>/ingredients/:id</td><td>Get a single ingredient</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>POST</td><td>/ingredients</td><td>Create an ingredient</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>PUT</td><td>/ingredients/:id</td><td>Update an ingredient</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>DELETE</td><td>/ingredients/:id</td><td>Delete ingredient</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>GET</td><td>/recipes</td><td>Get the recipes list</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>GET</td><td>/recipes/:id</td><td>Get a single recipe</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>POST</td><td>/recipes</td><td>Create a recipe</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>PUT</td><td>/recipes/:id</td><td>Update a recipe</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>DELETE</td><td>/recipes/:id</td><td>Delete a recipe</td><td>Protected</td><td>Admin, Viewer</td>
+    </tr>
+    <tr>
+      <td>GET</td><td>/users</td><td>Get users list</td><td>Protected</td><td>Admin</td>
+    </tr>
+    <tr>
+      <td>GET</td><td>/users/:id</td><td>Get a single user</td><td>Protected</td><td>Admin</td>
+    </tr>
+    <tr>
+      <td>POST</td><td>/users</td><td>Create a user</td><td>Protected</td><td>Admin</td>
+    </tr>
+    <tr>
+      <td>PUT</td><td>/users/:id</td><td>Update a user</td><td>Protected</td><td>Admin</td>
+    </tr>
+    <tr>
+      <td>DELETE</td><td>/users/:id</td><td>Delete a user</td><td>Protected</td><td>Admin</td>
+    </tr>
+    <tr>
+      <td>POST</td><td>/chat</td><td>Sends a message to the superchef agent</td><td>Protected</td><td>Admin</td>
+    </tr>
+  </tbody>
+</table>
+
+## Authentication & Security
+
+#### JWT-based Authentication
+
+- Stateless authentication using JWT access tokens
+- Tokens are issued on login and required for protected routes
+- Designed to be compatible with API clients and frontends.
+
+#### Role-Based Access Control (RBAC)
+
+- Users can have one or more roles
+- Example roles:
+  - admin
+  - viewer
+
+RBAC is applied at the route level, ensuring fine grained authorization.
+
+#### Route Protection
+
+- Global authentication guard ensures all protected routes require a valid JWT.
+- Public routes are explicitly marked.
+- Authorization logic is separated from controllers.
+
+#### Rate Limiting
+
+- Built-in rate limiter to protect the API from abuse.
+- Prevents excessive requests to sensitive endpoints
+- Configurable limits per route or globally.
+
+## Async Processing with RabbitMQ
+
+#### Event-driven Architecture
+
+- RabbitMQ is used to handle async workflows
+- Examples:
+  - User registration triggers a welcome email
+  - Extensible to notifications
+
+#### Producers & COnsumers Separation
+
+- API publishes domain events
+- Workers consume and process them independently
+- Designed to be monolith-friendly, without premature microservices.
 
 ## Project setup
 
@@ -31,12 +154,6 @@ $ npm run start:prod
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Deployment
