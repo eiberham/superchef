@@ -11,9 +11,11 @@ import { IngredientModule } from './ingredients/ingredient.module';
 import { AuthModule } from './auth/auth.module';
 import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
 import { ChatModule } from './chat/chat.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
+    RedisModule,
     UserModule,
     RecipeModule,
     IngredientModule,
