@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
@@ -12,9 +13,12 @@ import { AuthModule } from './auth/auth.module';
 import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
 import { ChatModule } from './chat/chat.module';
 import { RedisModule } from './redis/redis.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
+    StripeModule.forRootAsync(),
+    ConfigModule.forRoot({ isGlobal: true }),
     RedisModule,
     UserModule,
     RecipeModule,

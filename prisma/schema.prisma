@@ -26,6 +26,7 @@ model User {
   preferences Json @default("{}")
   recipes   Recipe[] // A user can have multiple recipes
   userRoles UserRole[] // A user can have multiple roles through UserRole
+  suscriptions Suscription?
   @@map("user")
 }
 
@@ -75,4 +76,34 @@ model UserRole {
   user User @relation(fields: [userId], references: [id])
   role Role @relation(fields: [roleId], references: [id])
   @@map("user_role")
+}
+
+model Plan {
+  id Int @id @default(autoincrement())
+  name String
+  price Int
+  currency String
+  stripePriceId String? @map("stripe_price_id")
+  features Json
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  suscriptions Suscription[]
+  @@map("plan")
+}
+
+model Suscription {
+  id Int @id @default(autoincrement())
+  userId Int @unique @map("user_id")
+  planId Int @map("plan_id")
+
+  status String
+  stripeCustomerId String @map("stripe_customer_id")
+  stripeSubscriptionId String @map("stripe_subscription_id")
+  currentPeriodEnd DateTime @map("current_period_end")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  canceledAt DateTime? @map("canceled_at")
+  user User @relation(fields: [userId], references: [id])
+  plan Plan @relation(fields: [planId], references: [id])
+  @@map("subscription")
 }

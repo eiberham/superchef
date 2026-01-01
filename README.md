@@ -157,6 +157,21 @@ The cache is applied to read-heavy endpoints following the **cache-aside** patte
 
 This approach keeps PostgreSQL as the sigle source of thruth while improving response times for frequent reads.
 
+## User Preferences
+
+Each user can configure dietary preferences that are stored as JSON object inside the user table.
+Suported fields:
+- `diet`: "none" | "vegetarian" | "vegan" | "omnivore"
+- `alergies`: string[]
+
+## AI Recipe Assistant
+
+Superchef includes an AI-powered assistant via the `/chat` endpoint, that helps users improve existing recipes by suggesting variations, optimizations, or substitutions based on natural language prompts.
+
+The assistant is implemented as a backend agent powered by OpenAI and orchestrated server side.
+
+All suggestions are generated in the context of a real recipe stored in the database.
+
 ## Project setup
 
 ```bash

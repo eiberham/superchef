@@ -89,3 +89,40 @@ ALTER TABLE
   public.user_role
 ADD
   CONSTRAINT user_role_pkey PRIMARY KEY (id);
+
+-- plan --
+
+CREATE TABLE
+  public.plan (
+    id serial NOT NULL,
+    created_at timestamp without time zone NOT NULL DEFAULT now(),
+    name character varying(255) NULL,
+    price integer NULL,
+    stripe_price_id character varying(255) NULL,
+    features jsonb NULL,
+    currency character varying(255) NULL
+  );
+
+ALTER TABLE
+  public.plan
+ADD
+  CONSTRAINT plan_pkey PRIMARY KEY (id)
+
+-- suscription --
+CREATE TABLE
+  public.subscription (
+    id serial NOT NULL,
+    created_at timestamp without time zone NOT NULL DEFAULT now(),
+    canceled_at timestamp without time zone NULL,
+    user_id integer NOT NULL,
+    plan_id integer NOT NULL,
+    status character varying(255) NULL,
+    stripe_customer_id character varying(255) NULL,
+    stripe_subscription_id character varying(255) NULL,
+    current_period_end timestamp without time zone NULL
+  );
+
+ALTER TABLE
+  public.subscription
+ADD
+  CONSTRAINT subscription_pkey PRIMARY KEY (id)

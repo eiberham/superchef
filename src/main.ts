@@ -2,19 +2,20 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConsoleLogger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: new ConsoleLogger({
+  const app = await NestFactory.create(AppModule, { rawBody: true });
+  const configService = app.get(ConfigService);
+  const logLevel = configService.get<string>('LOG_LEVEL')
+  const port = configService.get<number>('PORT') || 3000;
+
+  app.useLogger(new ConsoleLogger({
       colors: true,
       json: true,
       prefix: 'Superchef',
-      logLevels: process.env.LOG_LEVEL ? JSON.parse(process.env.LOG_LEVEL) : ['error', 'warn', 'log', 'debug', 'verbose'],
-    }),
-  });
+      logLevels: logLevel ? JSON.parse(logLevel) : ['error', 'warn', 'log', 'debug', 'verbose'],
+  }));
 
   app.enableVersioning({
     type: VersioningType.URI,
@@ -43,6 +44,6 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(port);
 }
 bootstrap();

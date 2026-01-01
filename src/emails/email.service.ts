@@ -1,7 +1,17 @@
+import { Injectable } from "@nestjs/common";
 import { Resend } from "resend";
+import { ConfigService } from "@nestjs/config";
 
+@Injectable()
 export class EmailService {
-    private resend = new Resend(process.env.RESEND_API_KEY!);
+
+    private resend: Resend;
+
+    constructor(private readonly configService: ConfigService) {
+        this.resend = new Resend(
+            this.configService.get<string>('RESEND_API_KEY')
+        )
+    }
 
     async send(name: string, email: string, subject: string, body: string) {
         const { data, error } = await this.resend.emails.send({
