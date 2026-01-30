@@ -1,0 +1,15 @@
+{
+  "name": "superchef",
+  "version": "1.0.0",
+  "description": "Superchef API",
+  "main": "../../dist/apps/superchef/main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "nest build superchef",
+    "start:dev": "nest start superchef --watch"
+  },
+  "author": "Abraham",
+  "license": "ISC"
+}

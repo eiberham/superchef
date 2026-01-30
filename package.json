@@ -5,6 +5,11 @@
   "author": "Abraham Cedeno",
   "private": true,
   "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "apps/*"
+    ]
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",

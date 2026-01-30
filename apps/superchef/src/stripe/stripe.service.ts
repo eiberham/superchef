@@ -12,7 +12,7 @@ export class StripeService {
     private readonly configService: ConfigService,
   ) {
     this.stripe = new Stripe(this.apiKey, {
-      apiVersion: '2025-12-15.clover',
+      apiVersion: '2026-01-28.clover',
       appInfo: {
         // For sample support and debugging, not required for production:
         name: 'stripe-samples/accept-a-payment',
