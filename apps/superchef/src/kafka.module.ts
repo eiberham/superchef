@@ -26,8 +26,9 @@ export class KafkaModule implements OnModuleInit {
   constructor(@Inject('KAFKA_SERVICE') private readonly kafka: ClientKafka) {}
 
   async onModuleInit() {
+
     const patterns = ['get.top.recipes']
-    
+
     patterns.forEach(pattern => {
       this.kafka.subscribeToResponseOf(pattern)
     })

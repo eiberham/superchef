@@ -49,6 +49,7 @@
     "@opentelemetry/semantic-conventions": "^1.39.0",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
+    "@prisma/extension-read-replicas": "^0.5.0",
     "amqp-connection-manager": "^5.0.0",
     "amqplib": "^0.10.9",
     "axios": "^1.13.4",

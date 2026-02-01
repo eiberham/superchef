@@ -1,8 +1,9 @@
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: superchef
+    container_name: superchef_db
     restart: always
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf -c hba_file=/etc/postgresql/pg_hba.conf
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -10,7 +11,46 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pg_primary_data:/var/lib/postgresql/data
+      - ./db/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./db/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ./db/init-replication.sql:/docker-entrypoint-initdb.d/init-replication.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d recipebooster"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgres_replica:
+    image: postgres:15-alpine
+    container_name: superchef_db_replica
+    user: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      PGPASSWORD: password
+    command: |
+      bash -c "
+      rm -rf /var/lib/postgresql/data/*
+      echo 'Waiting for primary to accept connections...'
+      until pg_isready -h superchef_db -U postgres; do
+        echo 'Primary not ready yet, waiting...'
+        sleep 2
+      done
+      echo 'Primary is ready, starting base backup...'
+      pg_basebackup -h superchef_db -D /var/lib/postgresql/data -U replicator -v -P
+      chmod 700 /var/lib/postgresql/data
+      echo \"primary_conninfo = 'host=superchef_db port=5432 user=replicator password=password'\" > /var/lib/postgresql/data/postgresql.auto.conf
+      touch /var/lib/postgresql/data/standby.signal
+      echo 'Starting replica...'
+      postgres
+      "
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - pg_replica_data:/var/lib/postgresql/data
+
   rabbitmq:
     image: rabbitmq:4-management
     container_name: rabbitmq
@@ -49,6 +89,8 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: 3
       CLUSTER_ID: MkU3OTM3N3ZmNGI2NDMyYj
   
   kafka-ui:
@@ -61,6 +103,7 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
 
 volumes:
-  postgres_data:
+  pg_primary_data:
+  pg_replica_data:
   rabbitmq_data:
   redis_data:
