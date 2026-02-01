@@ -131,3 +131,24 @@ model RefreshToken {
   @@unique([userId, deviceId])
   @@map("refresh_token")
 }
+
+enum OutboxStatus {
+  PENDING
+  PROCESSING
+  PROCESSED
+  FAILED
+}
+
+model OutboxEvent {
+  id          String   @id @default(uuid())
+  topic       String
+  payload     Json
+  status      OutboxStatus   @default(PENDING)
+  error       String?
+  attempts    Int       @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @map("updated_at")
+
+  @@index([status, createdAt])
+  @@map("outbox_event")
+}

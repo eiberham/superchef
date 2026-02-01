@@ -17,9 +17,12 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { KafkaModule } from './kafka.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { HealthModule } from './health/health.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { OutboxModule } from './outbox/outbox.module';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     KafkaModule,
     CacheModule.register({ isGlobal: true }),
     StripeModule.forRootAsync(),
@@ -44,6 +47,7 @@ import { HealthModule } from './health/health.module';
     CheckoutModule,
     AnalyticsModule,
     HealthModule,
+    OutboxModule,
   ],
   controllers: [AppController],
   providers: [

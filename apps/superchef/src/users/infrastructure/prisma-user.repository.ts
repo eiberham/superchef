@@ -10,7 +10,7 @@ import { UpdateUserData } from '../domain/user.interface';
 import { CreateUserData } from '../domain/user.interface';
 import { PlanNotFoundException } from '@/common/exceptions/plan-not-found.exception';
 import { UserNotFoundException } from '@/common/exceptions/user-not-found.exception';
-import { Prisma } from 'generated/prisma/edge';
+import { Prisma, OutboxStatus } from 'generated/prisma/edge';
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
@@ -99,38 +99,58 @@ export class UserRepositoryImpl implements UserRepository {
       throw new PlanNotFoundException();
     }
 
-    const user = await this.prisma.user.create({
-      data: {
-        name,
-        email,
-        username,
-        password,
-        ...(preferences && { preferences }),
-        roles: {
-          create:
-            roles?.map((role) => ({
-              role: {
-                connect: { name: role },
-              },
-            })) || [],
-        },
-        subscription: {
-          create: subscription
-            ? {
-                status: 'active',
-                stripeSubscriptionId: '',
-                currentPeriodEnd: null,
-                plan: {
-                  connect: {
-                    id: plan!.id,
-                    name: subscription,
+    const user = await this.prisma.$transaction(async (prisma) => {
+        const u = await this.prisma.user.create({
+          data: {
+            name,
+            email,
+            username,
+            password,
+            ...(preferences && { preferences }),
+            roles: {
+              create:
+                roles?.map((role) => ({
+                  role: {
+                    connect: { name: role },
                   },
-                },
-              }
-            : undefined,
-        },
-      },
-    });
+                })) || [],
+            },
+            subscription: {
+              create: subscription
+                ? {
+                    status: 'active',
+                    stripeSubscriptionId: '',
+                    currentPeriodEnd: null,
+                    plan: {
+                      connect: {
+                        id: plan!.id,
+                        name: subscription,
+                      },
+                    },
+                  }
+                : undefined,
+            },
+          },
+        });
+
+        await prisma.outboxEvent.create({
+          data: {
+            topic: 'user_registered',
+            payload: JSON.stringify({
+              name: u.name,
+              to: u.email,
+              subject: 'Welcome to superchef!',
+              body: `
+                Thank you for registering at superchef. 
+                We are excited to have you on board! 
+                `,
+            }),
+            status: OutboxStatus.PENDING,
+          },
+        });
+
+        return u;
+    })
 
     return user;
   }

@@ -14,12 +14,14 @@
 6. [Caching (Redis)](#caching-redis)
 7. [User Preferences](#user-preferences)
 8. [AI Recipe Assistant](#ai-recipe-assistant)
-9. [Project setup](#project-setup)
-10. [Environment variables](#environment-variables)
-11. [Compile and run the project](#compile-and-run-the-project)
-12. [Run tests](#run-tests)
-13. [Deployment](#deployment)
-14. [License](#license)
+9. [Analytics](#bar_chart-analytics)
+10. [Database Transactional Outbox Pattern](#outbox_tray-database-transactional-outbox-pattern)
+11. [Project setup](#project-setup)
+12. [Environment variables](#environment-variables)
+13. [Compile and run the project](#compile-and-run-the-project)
+14. [Run tests](#run-tests)
+15. [Deployment](#deployment)
+16. [License](#license)
 
 
 ## SuperChef
@@ -264,6 +266,52 @@ Sample response:
   { "id": "uuid-202", "name": "Spicy Ramen", "count": 189 }
 ]
 ```
+
+## :outbox_tray: Database Transactional Outbox Pattern
+
+When a user is created in the system two things happen:
+
+1. A new record is created in the users table respectively.
+2. A welcome email is dispatched to the user's inbox.
+
+This alone, could be a problem and lead to data inconsistencies, for example, it could be the case that the user is created successfully in our database but the message broker for whatever reason goes down precisely at that moment and the message is not delivered.
+
+How do we mitigate this ?
+
+By adding a transactional outbox pattern, this is how it works:
+
+1. There's a table holding the outbox events:
+
+  ```typescript
+  model OutboxEvent {
+    id          String   @id @default(uuid())
+    topic       String
+    payload     Json
+    status      OutboxStatus @default(PENDING)
+    error       String?
+    attempts    Int      @default(0)
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @default(now()) @map("updated_at")
+
+    @@index([status, createdAt])
+    @@map("outbox_event")
+  }
+  ```
+
+  Creating the user is done by means of a transaction, this transaction involves updating both the user table and the outbox_event table.
+
+2. There's a cron job checking the outbox_event table every `5` seconds. 
+
+- If there's a `PENDING` event it will try to send it to the message broker so it can be processed. 
+- If the processing fails and the third attempt hasn't been reached the status remains `PENDING` and the attempts count bumps up.
+- If it's the third attempt and the processing fails the status is updated to `FAILED`.
+
+You can check the entire flow in the image below.
+
+<p align="center">
+  <img src="./outbox.png" alt="superchef" />
+</p>
+
 
 ## :credit_card: Stripe Integration
 

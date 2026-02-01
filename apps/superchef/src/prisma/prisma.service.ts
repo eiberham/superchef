@@ -88,6 +88,10 @@ export class PrismaService implements OnModuleInit {
     return this.prisma.refreshToken;
   }
 
+  get outboxEvent() {
+    return this.prisma.outboxEvent;
+  }
+
   async onModuleInit() {
     await this.prisma.$connect();
   }

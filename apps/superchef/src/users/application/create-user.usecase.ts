@@ -35,18 +35,6 @@ export class CreateUserUsecase {
       user = await this.user.create(payload);
       this.logger.log(`User created: ${user.email}`);
 
-      const emailPayload = {
-        name: data.name,
-        to: data.email,
-        subject: 'Welcome to superchef!',
-        body: `
-                Thank you for registering at superchef. 
-                We are excited to have you on board! 
-                `,
-      };
-
-      this.client.emit('user_registered', emailPayload);
-
       return user;
     } catch (error) {
       this.logger.error(`Error creating user: ${data.email}`, error.stack);

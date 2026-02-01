@@ -20,7 +20,7 @@ import { PlanModule } from '@/plan/plan.module';
         name: 'EMAIL_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [process.env.RABBITMQ_URL || 'amqp://user:password@localhost:5672'],
           queue: 'rabbitmq',
           noAssert: true,
         },
