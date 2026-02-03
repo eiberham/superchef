@@ -312,6 +312,11 @@ You can check the entire flow in the image below.
   <img src="./outbox.png" alt="superchef" />
 </p>
 
+## Database Scaling
+
+As a first measure to horizontally scale the persistence layer two instances of the PostgreSQL database are present, the primary node and the replica. Separating the reading conexions from the writting ones.
+
+This was easy to implement with Prisma through the extension `extension-read-replicas`
 
 ## :credit_card: Stripe Integration
 
