@@ -16,12 +16,14 @@
 8. [AI Recipe Assistant](#ai-recipe-assistant)
 9. [Analytics](#bar_chart-analytics)
 10. [Database Transactional Outbox Pattern](#outbox_tray-database-transactional-outbox-pattern)
-11. [Project setup](#project-setup)
-12. [Environment variables](#environment-variables)
-13. [Compile and run the project](#compile-and-run-the-project)
-14. [Run tests](#run-tests)
-15. [Deployment](#deployment)
-16. [License](#license)
+11. [Database Scaling](#oil_drum-database-scaling)
+12. [Automated Testing & CI](#test_tube-automated-testing--ci)
+13. [Project setup](#project-setup)
+14. [Environment variables](#environment-variables)
+15. [Compile and run the project](#compile-and-run-the-project)
+16. [Run tests](#run-tests)
+17. [Deployment](#deployment)
+18. [License](#license)
 
 
 ## SuperChef
@@ -312,11 +314,21 @@ You can check the entire flow in the image below.
   <img src="./outbox.png" alt="superchef" />
 </p>
 
-## Database Scaling
+## :oil_drum: Database Scaling
 
 As a first measure to horizontally scale the persistence layer two instances of the PostgreSQL database are present, the primary node and the replica. Separating the reading conexions from the writting ones.
 
 This was easy to implement with Prisma through the extension `extension-read-replicas`
+
+## :test_tube: Automated Testing & CI
+
+The project implements automated robust E2E tests using [Jest](https://jestjs.io/) and [Prisma](https://www.prisma.io/).
+
+To avoid affecting the real database the CI/CD pipeline in Github orchestrates a real-time testing environment using Docker Service Containers:
+
+- Every PR triggers a workflow that spins up a dedicated Postgres 15 container.
+- The pipeline automatically handles Prisma migrations and database seeding before executing tests.
+- Implements pg_isready checks to ensure database availability before the test suite starts, preventing race conditions.
 
 ## :credit_card: Stripe Integration
 
