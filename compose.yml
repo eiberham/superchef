@@ -71,6 +71,11 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
   
   kafka:
     image: confluentinc/cp-kafka:7.5.0
@@ -102,6 +107,31 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+
+  superchef:
+    build:
+      context: ./backend/superchef
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/superchef/.env
+
+    container_name: superchef_service
+    command: >
+      sh -c "npx prisma migrate deploy && 
+             npx prisma db seed && 
+             node dist/src/main.js"
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/recipebooster
+      - REPLICA_URL=postgresql://postgres:password@localhost:5433/recipebooster
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
 volumes:
   pg_primary_data:

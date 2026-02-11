@@ -1,40 +1,40 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/superchef/src",
+  "sourceRoot": "backend/superchef/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": false,
-    "tsConfigPath": "apps/superchef/tsconfig.app.json"
+    "tsConfigPath": "backend/superchef/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps",
+  "root": "backend",
   "projects": {
     "analytics": {
       "type": "application",
-      "root": "apps/analytics",
+      "root": "backend/analytics",
       "entryFile": "main",
-      "sourceRoot": "apps/analytics/src",
+      "sourceRoot": "backend/analytics/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/analytics/tsconfig.app.json"
+        "tsConfigPath": "backend/analytics/tsconfig.app.json"
       }
     },
     "rabbitmq": {
       "type": "application",
-      "root": "apps/rabbitmq",
+      "root": "backend/rabbitmq",
       "entryFile": "main",
-      "sourceRoot": "apps/rabbitmq/src",
+      "sourceRoot": "backend/rabbitmq/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/rabbitmq/tsconfig.app.json"
+        "tsConfigPath": "backend/rabbitmq/tsconfig.app.json"
       }
     },
     "superchef": {
       "type": "application",
-      "root": "apps/superchef",
+      "root": "backend/superchef",
       "entryFile": "main",
-      "sourceRoot": "apps/superchef/src",
+      "sourceRoot": "backend/superchef/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/superchef/tsconfig.app.json"
+        "tsConfigPath": "backend/superchef/tsconfig.app.json"
       }
     }
   }

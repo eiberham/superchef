@@ -23,7 +23,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@/*": [
-        "./apps/superchef/src/*"
+        "backend/superchef/src/*"
       ],
       "generated/*": [
         "./generated/*"

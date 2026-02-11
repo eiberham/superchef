@@ -1,28 +1,14 @@
 {
   "name": "superchef",
-  "version": "0.0.1",
-  "description": "Agentic super chef powered by LLMs",
-  "author": "Abraham Cedeno",
-  "private": true,
-  "license": "MIT",
-  "workspaces": {
-    "packages": [
-      "backend/*"
-    ]
+  "version": "1.0.0",
+  "description": "Superchef API",
+  "main": "../../dist/backend/superchef/main.js",
+  "directories": {
+    "test": "test"
   },
   "scripts": {
-    "build": "nest build",
-    "format": "prettier --write \"backend/**/*.ts\" \"libs/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/backend/superchef/main",
-    "lint": "eslint \"{src,backend,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./backend/superchef/test/jest-e2e.json --detectOpenHandles --forceExit"
+    "build": "nest build superchef",
+    "start:dev": "nest start superchef --watch"
   },
   "dependencies": {
     "@keyv/redis": "^5.1.5",
@@ -37,7 +23,6 @@
     "@nestjs/microservices": "^11.0.0",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/platform-socket.io": "^11.1.12",
-    "@nestjs/schedule": "^6.1.0",
     "@nestjs/swagger": "^11.2.5",
     "@nestjs/terminus": "^11.0.0",
     "@nestjs/throttler": "^6.3.0",
@@ -102,27 +87,6 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.51.0"
   },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": ".",
-    "moduleNameMapper": {
-      "^generated/(.*)$": "<rootDir>/../generated/$1"
-    },
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "./coverage",
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/backend/"
-    ]
-  }
+  "author": "Abraham",
+  "license": "ISC"
 }
