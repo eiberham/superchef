@@ -3,7 +3,6 @@ import { Injectable, Inject, Logger } from '@nestjs/common';
 import type { UserRepository } from '../domain/user.interface';
 import { UserResponseData } from '../domain/user.interface';
 import { CreateUserData } from '../domain/user.interface';
-import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class CreateUserUsecase {
@@ -11,9 +10,7 @@ export class CreateUserUsecase {
 
   constructor(
     @Inject('USER_REPOSITORY')
-    private readonly user: UserRepository,
-    @Inject('EMAIL_SERVICE')
-    private client: ClientProxy,
+    private readonly user: UserRepository
   ) {}
 
   async hashPassword(password: string): Promise<string> {

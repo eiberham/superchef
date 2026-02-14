@@ -17,12 +17,12 @@ describe('GetUserByUseCase', () => {
       .compile();
 
     getUserByUsecase = unit;
-    userRepository = mockRepo as Mocked<UserRepository>;
+    userRepository = mockRepo as unknown as Mocked<UserRepository>;
   });
 
   it('should get a user by email', async () => {
     const user = {
-      id: 1,
+      id: '1',
       name: 'John Doe',
       username: 'johndoe',
       email: 'john.doe@example.com',
@@ -31,7 +31,7 @@ describe('GetUserByUseCase', () => {
       updatedAt: new Date(),
     };
 
-    userRepository.findByEmail.mockResolvedValue(user);
+    userRepository.findBy.mockResolvedValue(user);
 
     const result = await getUserByUsecase.findBy({ email: user.email });
 

@@ -89,6 +89,8 @@ export class UserRepositoryImpl implements UserRepository {
       subscription,
     } = data;
 
+    console.log('hey')
+
     const plan =
       subscription &&
       (await this.prisma.plan.findUnique({
@@ -98,6 +100,8 @@ export class UserRepositoryImpl implements UserRepository {
     if (subscription && !plan) {
       throw new PlanNotFoundException();
     }
+
+    console.log('bye')
 
     const user = await this.prisma.$transaction(async (prisma) => {
         const u = await this.prisma.user.create({

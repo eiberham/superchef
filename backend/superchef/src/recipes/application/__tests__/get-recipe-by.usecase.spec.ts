@@ -8,7 +8,7 @@ describe('GetRecipeByUseCase', () => {
 
   beforeAll(async () => {
     const mockRepo = {
-      findByName: jest.fn(),
+      findBy: jest.fn(),
     };
 
     const { unit } = await TestBed.solitary(GetRecipeByUsecase)
@@ -17,17 +17,17 @@ describe('GetRecipeByUseCase', () => {
       .compile();
 
     getRecipeByUseCase = unit;
-    recipeRepository = mockRepo as Mocked<RecipeRepository>;
+    recipeRepository = mockRepo as unknown as Mocked<RecipeRepository>;
   });
 
   it('should get a recipe by id', async () => {
     const recipe = {
-      id: 1,
+      id: '1',
       name: 'Pancakes',
       description: 'Delicious fluffy pancakes',
       steps: 'Mix ingredients and cook on a griddle.',
       imageUrl: 'http://example.com/pancakes.jpg',
-      userId: 1,
+      userId: '1',
       createdAt: new Date(),
       updatedAt: new Date(),
     };

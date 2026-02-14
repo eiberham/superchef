@@ -17,11 +17,11 @@ describe('DeleteIngredientUseCase', () => {
       .compile();
 
     deleteIngredientUseCase = unit;
-    ingredientRepository = mockRepo as Mocked<IngredientRepository>;
+    ingredientRepository = mockRepo as unknown as Mocked<IngredientRepository>;
   });
 
   it('should delete an ingredient', async () => {
-    const ingredient = { id: 1, name: 'Sugar' };
+    const ingredient = { id: '1', name: 'Sugar' };
     ingredientRepository.delete.mockResolvedValue(ingredient);
 
     await deleteIngredientUseCase.delete(ingredient.id);

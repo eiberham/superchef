@@ -17,14 +17,14 @@ describe('DeleteRecipeUseCase', () => {
       .compile();
 
     deleteRecipeUseCase = unit;
-    recipeRepository = mockRepo as Mocked<RecipeRepository>;
+    recipeRepository = mockRepo as unknown as Mocked<RecipeRepository>;
   });
 
   it('should delete a recipe by id', async () => {
-    const recipeId = 1;
-    recipeRepository.delete.mockResolvedValue();
+    const recipeId = '1';
+    recipeRepository.delete.mockResolvedValue({id: recipeId, name: 'Test Recipe'} as never);
 
-    const result = await deleteRecipeUseCase.deleteRecipe(recipeId);
+    await deleteRecipeUseCase.deleteRecipe(recipeId);
 
     expect(recipeRepository.delete).toHaveBeenCalledWith(recipeId);
   });

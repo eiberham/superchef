@@ -17,12 +17,12 @@ describe('DeleteUserUseCase', () => {
       .compile();
 
     deleteUserUsecase = unit;
-    userRepository = mockRepo as Mocked<UserRepository>;
+    userRepository = mockRepo as unknown as Mocked<UserRepository>;
   });
 
   it('should delete a user', async () => {
     const user = {
-      id: 1,
+      id: '1',
       name: 'John Doe',
       username: 'johndoe',
       email: 'john.doe@example.com',
@@ -31,10 +31,10 @@ describe('DeleteUserUseCase', () => {
       updatedAt: new Date(),
     };
 
-    userRepository.delete.mockResolvedValue();
+    userRepository.delete.mockResolvedValue(user);
 
     await deleteUserUsecase.deleteUser(user.id);
 
-    expect(userRepository.delete).toHaveBeenCalledWith(1);
+    expect(userRepository.delete).toHaveBeenCalledWith('1');
   });
 });

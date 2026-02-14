@@ -14,6 +14,6 @@ import { RedisService } from './redis/redis.service';
     })
   ],
   controllers: [AnalyticsController],
-  providers: [AnalyticsService, RedisService],
+  providers: [AnalyticsService],
 })
 export class AnalyticsModule {}
