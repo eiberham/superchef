@@ -1,14 +1,14 @@
 {
-  "name": "rabbitmq",
+  "name": "notifications",
   "version": "1.0.0",
   "description": "Queue service",
-  "main": "../../dist/backend/rabbitmq/main.js",
+  "main": "../../dist/backend/notifications/main.js",
   "directories": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "scripts": {
-    "build": "nest build rabbitmq",
-    "start:dev": "nest start rabbitmq --watch"
+    "build": "nest build notifications",
+    "start:dev": "nest start notifications --watch"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

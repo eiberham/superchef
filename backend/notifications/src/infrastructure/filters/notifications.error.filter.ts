@@ -9,8 +9,8 @@ import { RpcException } from '@nestjs/microservices';
 import { Observable, throwError } from 'rxjs';
 
 @Catch()
-export class RmqErrorFilter implements RpcExceptionFilter<RpcException> {
-  private readonly logger = new Logger(RmqErrorFilter.name);
+export class NotificationsErrorFilter implements RpcExceptionFilter<RpcException> {
+  private readonly logger = new Logger(NotificationsErrorFilter.name);
   private readonly RETRY_LIMIT = 3;
 
   catch(exception: RpcException, host: ArgumentsHost): Observable<any> {

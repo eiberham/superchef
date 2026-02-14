@@ -3,12 +3,12 @@ import { EventPattern, Ctx, RmqContext } from '@nestjs/microservices';
 import type { ChannelModel, ConsumeMessage } from 'amqplib';
 import { Email, UserRegisteredPayload } from '../domain/email.interface';
 import { SendMailUsecase } from '../application/send-mail.usecase';
-import { RmqErrorFilter } from '../infrastructure/filters/rmq.error.filter';
+import { NotificationsErrorFilter } from '../infrastructure/filters/notifications.error.filter';
 
-@UseFilters(RmqErrorFilter)
+@UseFilters(NotificationsErrorFilter)
 @Controller()
-export class RabbitmqController {
-  private readonly logger = new Logger(RabbitmqController.name);
+export class NotificationsController {
+  private readonly logger = new Logger(NotificationsController.name);
 
   constructor(private readonly email: SendMailUsecase) {}
 

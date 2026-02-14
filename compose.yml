@@ -133,6 +133,56 @@ services:
       redis:
         condition: service_healthy
 
+  analytics:
+    build:
+      context: ./backend/analytics
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/analytics/.env
+
+    container_name: analytics_service
+    command: >
+      sh -c "node dist/src/main.js"
+    ports:
+      - "3000:3000"
+    environment:
+      - LOG_LEVEL=["log", "error", "warn", "debug", "verbose"]
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+      - APP_URL=http://localhost:3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  notifications:
+    build:
+      context: ./backend/notifications
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/notifications/.env
+
+    container_name: notifications_service
+    command: >
+      sh -c "node dist/src/main.js"
+    ports:
+      - "3000:3000"
+    environment:
+      - RABBITMQ_URL=amqp://user:password@localhost:5672
+      - RESEND_API_KEY=re_6eDkHn5N_FMUmktAQSTDop3wk4scpD3Sd
+      - JWT_SECRET="N0tSoS3cr3tK3yF0rJwT"
+      - JWT_REFRESH_SECRET="3v3nM0r3S3cr3tK3yF0rJwT"
+      - LOG_LEVEL=["log", "error", "warn", "debug", "verbose"]
+      - APP_URL=http://localhost:3000
+      - HONEYCOMB_API_KEY=faGbosG9yxvmz8TPw956UD
+      - OTEL_SERVICE_NAME=notifications
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
 volumes:
   pg_primary_data:
   pg_replica_data:

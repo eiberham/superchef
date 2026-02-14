@@ -2,10 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": false,
-    "outDir": "../../dist/backend/rabbitmq",
+    "outDir": "../../dist/backend/notifications",
     "paths": {
       "@/*": [
-        "./backend/rabbitmq/src/*"
+        "./backend/notifications/src/*"
       ],
       "generated/*": [
         "./generated/*"

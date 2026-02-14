@@ -19,13 +19,13 @@
         "tsConfigPath": "backend/analytics/tsconfig.app.json"
       }
     },
-    "rabbitmq": {
+    "notifications": {
       "type": "application",
-      "root": "backend/rabbitmq",
+      "root": "backend/notifications",
       "entryFile": "main",
-      "sourceRoot": "backend/rabbitmq/src",
+      "sourceRoot": "backend/notifications/src",
       "compilerOptions": {
-        "tsConfigPath": "backend/rabbitmq/tsconfig.app.json"
+        "tsConfigPath": "backend/notifications/tsconfig.app.json"
       }
     },
     "superchef": {

@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RabbitmqController } from './rabbitmq.controller';
+import { NotificationsController } from './notifications.controller';
 import { SendMailUsecase } from '../application/send-mail.usecase';
 
-describe('RabbitmqController', () => {
-  let rabbitmqController: RabbitmqController;
+describe('NotificationsController', () => {
+  let notificationsController: NotificationsController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [RabbitmqController],
+      controllers: [NotificationsController],
       providers: [SendMailUsecase],
     }).compile();
 
-    rabbitmqController = app.get<RabbitmqController>(RabbitmqController);
+    notificationsController = app.get<NotificationsController>(NotificationsController);
   });
 
   describe('root', () => {
@@ -22,7 +22,7 @@ describe('RabbitmqController', () => {
         subject: '',
         body: '',
       };
-      expect(rabbitmqController.handleSendEmail(data)).toHaveBeenCalled();
+      expect(notificationsController.handleSendEmail(data)).toHaveBeenCalled();
     });
   });
 });

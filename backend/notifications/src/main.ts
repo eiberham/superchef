@@ -5,7 +5,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 import { NestFactory } from '@nestjs/core';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
-import { RabbitmqModule } from './rabbitmq.module';
+import { NotificationsModule } from './notifications.module';
 import { ConfigService } from '@nestjs/config';
 import { otelSDK } from 'backend/superchef/src/tracing';
 import { Logger } from 'backend/superchef/src/logger';
@@ -14,7 +14,7 @@ async function bootstrap() {
   await otelSDK.start();
 
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    RabbitmqModule,
+    NotificationsModule,
     {
       transport: Transport.RMQ,
       options: {
